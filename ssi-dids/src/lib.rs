@@ -1283,7 +1283,7 @@ impl Document {
     pub fn select_object(&self, id: &DIDURL) -> Result<Resource, Error> {
         let id_string = String::from(id.clone());
         let id_relative_string_opt = id.to_relative(&self.id).map(|rel_url| rel_url.to_string());
-        for vm in vec![
+        for vm in [
             &self.verification_method,
             &self.authentication,
             &self.assertion_method,

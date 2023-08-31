@@ -269,7 +269,7 @@ impl Default for Algorithm {
 }
 
 impl JWK {
-    #[cfg(any(feature = "ed25519"))]
+    #[cfg(feature = "ed25519")]
     pub fn generate_ed25519() -> Result<JWK, Error> {
         #[cfg(feature = "ring")]
         {
@@ -492,7 +492,7 @@ impl JWK {
             }
             "Multikey" => match multicodec::decode(&pk_bytes) {
                 Ok((codec, pk)) => match codec {
-                    #[cfg(any(feature = "ed25519"))]
+                    #[cfg(feature = "ed25519")]
                     multicodec::Codec::Ed25519Pub => ed25519_parse(&pk),
                     #[cfg(feature = "secp256k1")]
                     multicodec::Codec::Secp256k1Pub => secp256k1_parse(&pk),
@@ -512,9 +512,9 @@ impl JWK {
         let bytes = multibase::decode(multicodec)?.1;
         match multicodec::decode(&bytes) {
             Ok((codec, k)) => match codec {
-                #[cfg(any(feature = "ed25519"))]
+                #[cfg(feature = "ed25519")]
                 multicodec::Codec::Ed25519Pub => ed25519_parse(&k),
-                #[cfg(any(feature = "ed25519"))]
+                #[cfg(feature = "ed25519")]
                 multicodec::Codec::Ed25519Priv => ed25519_parse_private(&k),
                 #[cfg(feature = "secp256k1")]
                 multicodec::Codec::Secp256k1Pub => secp256k1_parse(&k),

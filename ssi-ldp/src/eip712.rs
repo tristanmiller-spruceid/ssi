@@ -575,7 +575,7 @@ pub fn encode_data(
                 return Ok(int);
             }
             // Left-pad to 256 bits
-            vec![EMPTY_32[0..(32 - len)].to_vec(), int].concat()
+            [EMPTY_32[0..(32 - len)].to_vec(), int].concat()
         }
         EIP712Type::IntN(n) => {
             let n = *n;
@@ -600,7 +600,7 @@ pub fn encode_data(
             static PADDING_POS: [u8; 32] = [0; 32];
             static PADDING_NEG: [u8; 32] = [0xff; 32];
             let padding = if negative { PADDING_NEG } else { PADDING_POS };
-            vec![padding[0..(32 - len)].to_vec(), int].concat()
+            [padding[0..(32 - len)].to_vec(), int].concat()
         }
         EIP712Type::Bool => {
             let b = data.as_bool().ok_or(TypedDataHashError::ExpectedBoolean)?;
@@ -616,7 +616,7 @@ pub fn encode_data(
                 return Err(TypedDataHashError::ExpectedAddressLength(bytes.len()));
             }
             static PADDING: [u8; 12] = [0; 12];
-            vec![PADDING.to_vec(), bytes].concat()
+            [PADDING.to_vec(), bytes].concat()
         }
         EIP712Type::Array(member_type) => {
             // Note: this implementation follows eth-sig-util
@@ -863,7 +863,7 @@ impl TypedData {
         let domain_separator =
             hash_struct(&self.domain, &StructName::from("EIP712Domain"), &self.types)?;
 
-        let bytes = vec![
+        let bytes = [
             vec![0x19, 0x01],
             domain_separator.to_vec(),
             message_hash.to_vec(),
